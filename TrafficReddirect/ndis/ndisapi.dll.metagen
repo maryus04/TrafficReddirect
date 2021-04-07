@@ -1,0 +1,349 @@
+ImageRuntimeVersion: v4.0.30319
+Assembly ndisapi, Version=3.2.*, Culture=Invariant Language (Invariant Country): 
+	hash=SHA1, flags=PublicKey
+Assembly mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Class NdisApi.NetworkAdapter: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(System.String, System.String, IntPtr, NdisApi.NDIS_MEDIUM, System.Net.NetworkInformation.PhysicalAddress, UInt16): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    UInt16 Mtu 'get ' : 
+    System.Net.NetworkInformation.PhysicalAddress CurrentAddress 'get ' : 
+    NdisApi.NDIS_MEDIUM Medium 'get ' : 
+    IntPtr Handle 'get ' : 
+    System.String FriendlyName 'get ' : 
+    System.String Name 'get ' : 
+  Methods:
+    get_Name(): PrivateScope, Public, HideBySig, SpecialName
+    get_FriendlyName(): PrivateScope, Public, HideBySig, SpecialName
+    get_Handle(): PrivateScope, Public, HideBySig, SpecialName
+    get_Medium(): PrivateScope, Public, HideBySig, SpecialName
+    get_CurrentAddress(): PrivateScope, Public, HideBySig, SpecialName
+    get_Mtu(): PrivateScope, Public, HideBySig, SpecialName
+Class NdisApi.RawPacket: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    Byte[] Data 'get set' : 
+    CHECKSUM_FLAG Checksums 'get set' : 
+    UInt32 FilterId 'get set' : 
+    UInt32 Dot1q 'get set' : 
+    UInt32 NdisFlags 'get set' : 
+    NdisApi.PACKET_FLAG DeviceFlags 'get set' : 
+  Methods:
+    get_DeviceFlags(): PrivateScope, Public, HideBySig, SpecialName
+    set_DeviceFlags(PACKET_FLAG): PrivateScope, Public, HideBySig, SpecialName
+    get_NdisFlags(): PrivateScope, Public, HideBySig, SpecialName
+    set_NdisFlags(UInt32): PrivateScope, Public, HideBySig, SpecialName
+    get_Dot1q(): PrivateScope, Public, HideBySig, SpecialName
+    set_Dot1q(UInt32): PrivateScope, Public, HideBySig, SpecialName
+    get_FilterId(): PrivateScope, Public, HideBySig, SpecialName
+    set_FilterId(UInt32): PrivateScope, Public, HideBySig, SpecialName
+    get_Checksums(): PrivateScope, Public, HideBySig, SpecialName
+    set_Checksums(CHECKSUM_FLAG): PrivateScope, Public, HideBySig, SpecialName
+    get_Data(): PrivateScope, Public, HideBySig, SpecialName
+    set_Data(Byte[]): PrivateScope, Public, HideBySig, SpecialName
+Struct NdisApi.RawPacket+CHECKSUM_FLAG: AutoLayout, AnsiClass, Class, NestedPublic, Sealed, BeforeFieldInit
+  :System.Enum
+  Fields:
+    UInt32 value__ : Public, SpecialName, RTSpecialName
+    CHECKSUM_FLAG RECALCULATE_IP_V4 = 1 : Public, Static, Literal, HasDefault
+    CHECKSUM_FLAG RECALCULATE_ICMP_V4 = 2 : Public, Static, Literal, HasDefault
+    CHECKSUM_FLAG RECALCULATE_TCP_V4 = 4 : Public, Static, Literal, HasDefault
+    CHECKSUM_FLAG RECALCULATE_UDP_V4 = 8 : Public, Static, Literal, HasDefault
+Class NdisApi.NdisBufferResource: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.IDisposable
+  Properties:
+    Int32 Size 'get ' : 
+    _ETH_M_REQUEST* Request 'get ' : 
+    _INTERMEDIATE_BUFFER* Buffer 'get ' : 
+  Methods:
+    get_Buffer(): PrivateScope, Public, HideBySig, SpecialName
+    get_Request(): PrivateScope, Public, HideBySig, SpecialName
+    get_Size(): PrivateScope, Public, HideBySig, SpecialName
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
+Class NdisApi.PacketOidData: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    Byte[] Data 'get set' : 
+    UInt32 Oid 'get set' : 
+    IntPtr Adapter 'get set' : 
+  Methods:
+    get_Adapter(): PrivateScope, Public, HideBySig, SpecialName
+    set_Adapter(IntPtr): PrivateScope, Public, HideBySig, SpecialName
+    get_Oid(): PrivateScope, Public, HideBySig, SpecialName
+    set_Oid(UInt32): PrivateScope, Public, HideBySig, SpecialName
+    get_Data(): PrivateScope, Public, HideBySig, SpecialName
+    set_Data(Byte[]): PrivateScope, Public, HideBySig, SpecialName
+Class NdisApi.RasLinkInfo: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(UInt32, UInt32, System.Net.NetworkInformation.PhysicalAddress, System.Net.NetworkInformation.PhysicalAddress, Byte[]): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    Byte[] ProtocolBuffer 'get ' : 
+    System.Net.NetworkInformation.PhysicalAddress LocalAddress 'get ' : 
+    System.Net.NetworkInformation.PhysicalAddress RemoteAddress 'get ' : 
+    UInt32 MaximumTotalSize 'get ' : 
+    UInt32 LinkSpeed 'get ' : 
+  Methods:
+    get_LinkSpeed(): PrivateScope, Public, HideBySig, SpecialName
+    get_MaximumTotalSize(): PrivateScope, Public, HideBySig, SpecialName
+    get_RemoteAddress(): PrivateScope, Public, HideBySig, SpecialName
+    get_LocalAddress(): PrivateScope, Public, HideBySig, SpecialName
+    get_ProtocolBuffer(): PrivateScope, Public, HideBySig, SpecialName
+Class NdisApi.Eth802dot3Filter: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(ETH_802_3_FLAGS, System.Net.NetworkInformation.PhysicalAddress, System.Net.NetworkInformation.PhysicalAddress, UInt16): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    UInt16 Protocol 'get set' : 
+    System.Net.NetworkInformation.PhysicalAddress DestAddress 'get set' : 
+    System.Net.NetworkInformation.PhysicalAddress SrcAddress 'get set' : 
+    ETH_802_3_FLAGS ValidFields 'get set' : 
+  Methods:
+    ToString(): PrivateScope, Public, Virtual, HideBySig
+    get_ValidFields(): PrivateScope, Public, HideBySig, SpecialName
+    set_ValidFields(ETH_802_3_FLAGS): PrivateScope, Public, HideBySig, SpecialName
+    get_SrcAddress(): PrivateScope, Public, HideBySig, SpecialName
+    set_SrcAddress(PhysicalAddress): PrivateScope, Public, HideBySig, SpecialName
+    get_DestAddress(): PrivateScope, Public, HideBySig, SpecialName
+    set_DestAddress(PhysicalAddress): PrivateScope, Public, HideBySig, SpecialName
+    get_Protocol(): PrivateScope, Public, HideBySig, SpecialName
+    set_Protocol(UInt16): PrivateScope, Public, HideBySig, SpecialName
+Struct NdisApi.Eth802dot3Filter+ETH_802_3_FLAGS: AutoLayout, AnsiClass, Class, NestedPublic, Sealed, BeforeFieldInit
+  :System.Enum
+  Fields:
+    UInt32 value__ : Public, SpecialName, RTSpecialName
+    ETH_802_3_FLAGS ETH_802_3_SRC_ADDRESS = 1 : Public, Static, Literal, HasDefault
+    ETH_802_3_FLAGS ETH_802_3_DEST_ADDRESS = 2 : Public, Static, Literal, HasDefault
+    ETH_802_3_FLAGS ETH_802_3_PROTOCOL = 4 : Public, Static, Literal, HasDefault
+Class NdisApi.IpNetRange: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(ADDRESS_TYPE, System.Net.IPAddress, System.Net.IPAddress): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    System.Net.IPAddress EndRange 'get set' : 
+    System.Net.IPAddress StartRange 'get set' : 
+    System.Net.IPAddress NetworkMask 'get set' : 
+    System.Net.IPAddress NetworkAddress 'get set' : 
+    ADDRESS_TYPE AddressType 'get set' : 
+  Methods:
+    ToString(): PrivateScope, Public, Virtual, HideBySig
+    get_AddressType(): PrivateScope, Public, HideBySig, SpecialName
+    set_AddressType(ADDRESS_TYPE): PrivateScope, Public, HideBySig, SpecialName
+    get_NetworkAddress(): PrivateScope, Public, HideBySig, SpecialName
+    set_NetworkAddress(IPAddress): PrivateScope, Public, HideBySig, SpecialName
+    get_NetworkMask(): PrivateScope, Public, HideBySig, SpecialName
+    set_NetworkMask(IPAddress): PrivateScope, Public, HideBySig, SpecialName
+    get_StartRange(): PrivateScope, Public, HideBySig, SpecialName
+    set_StartRange(IPAddress): PrivateScope, Public, HideBySig, SpecialName
+    get_EndRange(): PrivateScope, Public, HideBySig, SpecialName
+    set_EndRange(IPAddress): PrivateScope, Public, HideBySig, SpecialName
+Struct NdisApi.IpNetRange+ADDRESS_TYPE: AutoLayout, AnsiClass, Class, NestedPublic, Sealed, BeforeFieldInit
+  :System.Enum
+  Fields:
+    UInt32 value__ : Public, SpecialName, RTSpecialName
+    ADDRESS_TYPE IP_SUBNET_TYPE = 1 : Public, Static, Literal, HasDefault
+    ADDRESS_TYPE IP_RANGE_TYPE = 2 : Public, Static, Literal, HasDefault
+Class NdisApi.IpAddressFilter: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(System.Net.Sockets.AddressFamily, IP_FILTER_FIELDS, NdisApi.IpNetRange, NdisApi.IpNetRange, Byte): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    Byte Protocol 'get set' : 
+    NdisApi.IpNetRange DestAddress 'get set' : 
+    NdisApi.IpNetRange SrcAddress 'get set' : 
+    IP_FILTER_FIELDS ValidFields 'get set' : 
+    System.Net.Sockets.AddressFamily IpAddressFamily 'get set' : 
+  Methods:
+    ToString(): PrivateScope, Public, Virtual, HideBySig
+    get_IpAddressFamily(): PrivateScope, Public, HideBySig, SpecialName
+    set_IpAddressFamily(AddressFamily): PrivateScope, Public, HideBySig, SpecialName
+    get_ValidFields(): PrivateScope, Public, HideBySig, SpecialName
+    set_ValidFields(IP_FILTER_FIELDS): PrivateScope, Public, HideBySig, SpecialName
+    get_SrcAddress(): PrivateScope, Public, HideBySig, SpecialName
+    set_SrcAddress(IpNetRange): PrivateScope, Public, HideBySig, SpecialName
+    get_DestAddress(): PrivateScope, Public, HideBySig, SpecialName
+    set_DestAddress(IpNetRange): PrivateScope, Public, HideBySig, SpecialName
+    get_Protocol(): PrivateScope, Public, HideBySig, SpecialName
+    set_Protocol(Byte): PrivateScope, Public, HideBySig, SpecialName
+Struct NdisApi.IpAddressFilter+IP_FILTER_FIELDS: AutoLayout, AnsiClass, Class, NestedPublic, Sealed, BeforeFieldInit
+  :System.Enum
+  Fields:
+    UInt32 value__ : Public, SpecialName, RTSpecialName
+    IP_FILTER_FIELDS IP_FILTER_SRC_ADDRESS = 1 : Public, Static, Literal, HasDefault
+    IP_FILTER_FIELDS IP_FILTER_DEST_ADDRESS = 2 : Public, Static, Literal, HasDefault
+    IP_FILTER_FIELDS IP_FILTER_PROTOCOL = 4 : Public, Static, Literal, HasDefault
+Class NdisApi.TcpUdpFilter: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(TCPUDP_FILTER_FIELDS, PortRange, PortRange, Byte): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    Byte TCPFlags 'get set' : 
+    PortRange DestPort 'get set' : 
+    PortRange SrcPort 'get set' : 
+    TCPUDP_FILTER_FIELDS ValidFields 'get set' : 
+  Methods:
+    ToString(): PrivateScope, Public, Virtual, HideBySig
+    get_ValidFields(): PrivateScope, Public, HideBySig, SpecialName
+    set_ValidFields(TCPUDP_FILTER_FIELDS): PrivateScope, Public, HideBySig, SpecialName
+    get_SrcPort(): PrivateScope, Public, HideBySig, SpecialName
+    set_SrcPort(PortRange): PrivateScope, Public, HideBySig, SpecialName
+    get_DestPort(): PrivateScope, Public, HideBySig, SpecialName
+    set_DestPort(PortRange): PrivateScope, Public, HideBySig, SpecialName
+    get_TCPFlags(): PrivateScope, Public, HideBySig, SpecialName
+    set_TCPFlags(Byte): PrivateScope, Public, HideBySig, SpecialName
+Struct NdisApi.TcpUdpFilter+TCPUDP_FILTER_FIELDS: AutoLayout, AnsiClass, Class, NestedPublic, Sealed, BeforeFieldInit
+  :System.Enum
+  Fields:
+    Int32 value__ : Public, SpecialName, RTSpecialName
+    TCPUDP_FILTER_FIELDS TCPUDP_SRC_PORT = 1 : Public, Static, Literal, HasDefault
+    TCPUDP_FILTER_FIELDS TCPUDP_DEST_PORT = 2 : Public, Static, Literal, HasDefault
+    TCPUDP_FILTER_FIELDS TCPUDP_TCP_FLAGS = 4 : Public, Static, Literal, HasDefault
+Struct NdisApi.TcpUdpFilter+PortRange: AutoLayout, AnsiClass, Class, NestedPublic, SequentialLayout, Sealed, BeforeFieldInit
+  :System.ValueType
+  Fields:
+    UInt16 startRange : Public
+    UInt16 endRange : Public
+  Methods:
+    ToString(): PrivateScope, Public, Final, Virtual, HideBySig
+Class NdisApi.StaticFilter: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(IntPtr, NdisApi.PACKET_FLAG, FILTER_PACKET_ACTION, STATIC_FILTER_FIELDS, NdisApi.Eth802dot3Filter, NdisApi.IpAddressFilter, NdisApi.TcpUdpFilter): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Properties:
+    NdisApi.TcpUdpFilter TransportFilter 'get set' : 
+    NdisApi.IpAddressFilter NetworkFilter 'get set' : 
+    NdisApi.Eth802dot3Filter DataLinkFilter 'get set' : 
+    UInt64 BytesOut 'get set' : 
+    UInt64 PacketsOut 'get set' : 
+    UInt64 BytesIn 'get set' : 
+    UInt64 PacketsIn 'get set' : 
+    UInt32 LastReset 'get set' : 
+    STATIC_FILTER_FIELDS ValidFields 'get set' : 
+    FILTER_PACKET_ACTION FilterAction 'get set' : 
+    NdisApi.PACKET_FLAG DirectionFlags 'get set' : 
+    IntPtr Adapter 'get set' : 
+  Methods:
+    ToString(): PrivateScope, Public, Virtual, HideBySig
+    get_Adapter(): PrivateScope, Public, HideBySig, SpecialName
+    set_Adapter(IntPtr): PrivateScope, Public, HideBySig, SpecialName
+    get_DirectionFlags(): PrivateScope, Public, HideBySig, SpecialName
+    set_DirectionFlags(PACKET_FLAG): PrivateScope, Public, HideBySig, SpecialName
+    get_FilterAction(): PrivateScope, Public, HideBySig, SpecialName
+    set_FilterAction(FILTER_PACKET_ACTION): PrivateScope, Public, HideBySig, SpecialName
+    get_ValidFields(): PrivateScope, Public, HideBySig, SpecialName
+    set_ValidFields(STATIC_FILTER_FIELDS): PrivateScope, Public, HideBySig, SpecialName
+    get_LastReset(): PrivateScope, Public, HideBySig, SpecialName
+    set_LastReset(UInt32): PrivateScope, Public, HideBySig, SpecialName
+    get_PacketsIn(): PrivateScope, Public, HideBySig, SpecialName
+    set_PacketsIn(UInt64): PrivateScope, Public, HideBySig, SpecialName
+    get_BytesIn(): PrivateScope, Public, HideBySig, SpecialName
+    set_BytesIn(UInt64): PrivateScope, Public, HideBySig, SpecialName
+    get_PacketsOut(): PrivateScope, Public, HideBySig, SpecialName
+    set_PacketsOut(UInt64): PrivateScope, Public, HideBySig, SpecialName
+    get_BytesOut(): PrivateScope, Public, HideBySig, SpecialName
+    set_BytesOut(UInt64): PrivateScope, Public, HideBySig, SpecialName
+    get_DataLinkFilter(): PrivateScope, Public, HideBySig, SpecialName
+    set_DataLinkFilter(Eth802dot3Filter): PrivateScope, Public, HideBySig, SpecialName
+    get_NetworkFilter(): PrivateScope, Public, HideBySig, SpecialName
+    set_NetworkFilter(IpAddressFilter): PrivateScope, Public, HideBySig, SpecialName
+    get_TransportFilter(): PrivateScope, Public, HideBySig, SpecialName
+    set_TransportFilter(TcpUdpFilter): PrivateScope, Public, HideBySig, SpecialName
+Struct NdisApi.StaticFilter+FILTER_PACKET_ACTION: AutoLayout, AnsiClass, Class, NestedPublic, Sealed, BeforeFieldInit
+  :System.Enum
+  Fields:
+    UInt32 value__ : Public, SpecialName, RTSpecialName
+    FILTER_PACKET_ACTION FILTER_PACKET_PASS = 1 : Public, Static, Literal, HasDefault
+    FILTER_PACKET_ACTION FILTER_PACKET_DROP = 2 : Public, Static, Literal, HasDefault
+    FILTER_PACKET_ACTION FILTER_PACKET_REDIRECT = 3 : Public, Static, Literal, HasDefault
+    FILTER_PACKET_ACTION FILTER_PACKET_PASS_RDR = 4 : Public, Static, Literal, HasDefault
+    FILTER_PACKET_ACTION FILTER_PACKET_DROP_RDR = 5 : Public, Static, Literal, HasDefault
+Struct NdisApi.StaticFilter+STATIC_FILTER_FIELDS: AutoLayout, AnsiClass, Class, NestedPublic, Sealed, BeforeFieldInit
+  :System.Enum
+  Fields:
+    UInt32 value__ : Public, SpecialName, RTSpecialName
+    STATIC_FILTER_FIELDS DATA_LINK_LAYER_VALID = 1 : Public, Static, Literal, HasDefault
+    STATIC_FILTER_FIELDS NETWORK_LAYER_VALID = 2 : Public, Static, Literal, HasDefault
+    STATIC_FILTER_FIELDS TRANSPORT_LAYER_VALID = 4 : Public, Static, Literal, HasDefault
+Class NdisApi.NdisApiDotNet: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+    Void .ctor(System.String): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Interfaces:
+    System.IDisposable
+  Methods:
+    GetVersion(): PrivateScope, Public, HideBySig
+    GetTcpipBoundAdaptersInfo(): PrivateScope, Public, HideBySig
+    SendPacketToMstcp(IntPtr, RawPacket): PrivateScope, Public, HideBySig
+    SendPacketToAdapter(IntPtr, RawPacket): PrivateScope, Public, HideBySig
+    ReadPacket(IntPtr): PrivateScope, Public, HideBySig
+    SendPacketsToMstcp(IntPtr, NdisBufferResource, List`1): PrivateScope, Public, HideBySig
+    SendPacketsToAdapter(IntPtr, NdisBufferResource, List`1): PrivateScope, Public, HideBySig
+    ReadPackets(IntPtr, NdisBufferResource): PrivateScope, Public, HideBySig
+    SetAdapterMode(IntPtr, MSTCP_FLAGS): PrivateScope, Public, HideBySig
+    GetAdapterMode(IntPtr, MSTCP_FLAGS&(Out)): PrivateScope, Public, HideBySig
+    FlushAdapterPacketQueue(IntPtr): PrivateScope, Public, HideBySig
+    GetAdapterPacketQueueSize(IntPtr, UInt32&(Out)): PrivateScope, Public, HideBySig
+    SetPacketEvent(IntPtr, ManualResetEvent): PrivateScope, Public, HideBySig
+    SetWANEvent(ManualResetEvent): PrivateScope, Public, HideBySig
+    SetAdapterListChangeEvent(ManualResetEvent): PrivateScope, Public, HideBySig
+    NdisrdRequest(PacketOidData, Boolean(HasFieldMarshal)): PrivateScope, Public, HideBySig
+    GetRasLinks(IntPtr): PrivateScope, Public, HideBySig
+    SetHwPacketFilter(IntPtr, UInt32): PrivateScope, Public, HideBySig
+    GetHwPacketFilter(IntPtr, UInt32&(Out)): PrivateScope, Public, HideBySig
+    SetHwPacketFilterEvent(IntPtr, ManualResetEvent): PrivateScope, Public, HideBySig
+    SetPacketFilterTable(List`1): PrivateScope, Public, HideBySig
+    ResetPacketFilterTable(): PrivateScope, Public, HideBySig
+    GetPacketFilterTableSize(UInt32&): PrivateScope, Public, HideBySig
+    GetPacketFilterTable(): PrivateScope, Public, HideBySig
+    GetPacketFilterTableResetStats(): PrivateScope, Public, HideBySig
+    IsDriverLoaded(): PrivateScope, Public, HideBySig
+    SetMTUDecrement(UInt32): PrivateScope, Public, Static, HideBySig
+    GetMTUDecrement(): PrivateScope, Public, Static, HideBySig
+    SetAdaptersStartupMode(UInt32): PrivateScope, Public, Static, HideBySig
+    GetAdaptersStartupMode(): PrivateScope, Public, Static, HideBySig
+    IsNdiswanIp(String): PrivateScope, Public, Static, HideBySig
+    IsNdiswanIpv6(String): PrivateScope, Public, Static, HideBySig
+    IsNdiswanBh(String): PrivateScope, Public, Static, HideBySig
+    Dispose(): PrivateScope, Public, Final, Virtual, HideBySig
+Struct NdisApi.MSTCP_FLAGS: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
+  :System.Enum
+  Fields:
+    UInt32 value__ : Public, SpecialName, RTSpecialName
+    NdisApi.MSTCP_FLAGS MSTCP_FLAG_SENT_TUNNEL = 1 : Public, Static, Literal, HasDefault
+    NdisApi.MSTCP_FLAGS MSTCP_FLAG_RECV_TUNNEL = 2 : Public, Static, Literal, HasDefault
+    NdisApi.MSTCP_FLAGS MSTCP_FLAG_TUNNEL = 3 : Public, Static, Literal, HasDefault
+    NdisApi.MSTCP_FLAGS MSTCP_FLAG_SENT_LISTEN = 4 : Public, Static, Literal, HasDefault
+    NdisApi.MSTCP_FLAGS MSTCP_FLAG_RECV_LISTEN = 8 : Public, Static, Literal, HasDefault
+    NdisApi.MSTCP_FLAGS MSTCP_FLAG_LISTEN = 12 : Public, Static, Literal, HasDefault
+    NdisApi.MSTCP_FLAGS MSTCP_FLAG_FILTER_DIRECT = 16 : Public, Static, Literal, HasDefault
+    NdisApi.MSTCP_FLAGS MSTCP_FLAG_LOOPBACK_FILTER = 32 : Public, Static, Literal, HasDefault
+    NdisApi.MSTCP_FLAGS MSTCP_FLAG_LOOPBACK_BLOCK = 64 : Public, Static, Literal, HasDefault
+Struct NdisApi.PACKET_FLAG: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
+  :System.Enum
+  Fields:
+    UInt32 value__ : Public, SpecialName, RTSpecialName
+    NdisApi.PACKET_FLAG PACKET_FLAG_ON_SEND = 1 : Public, Static, Literal, HasDefault
+    NdisApi.PACKET_FLAG PACKET_FLAG_ON_RECEIVE = 2 : Public, Static, Literal, HasDefault
+    NdisApi.PACKET_FLAG PACKET_FLAG_ON_SEND_RECEIVE = 3 : Public, Static, Literal, HasDefault
+Struct NdisApi.NDIS_MEDIUM: AutoLayout, AnsiClass, Class, Public, Sealed, BeforeFieldInit
+  :System.Enum
+  Fields:
+    UInt32 value__ : Public, SpecialName, RTSpecialName
+    NdisApi.NDIS_MEDIUM NdisMediumDefault = 0 : Public, Static, Literal, HasDefault
+    NdisApi.NDIS_MEDIUM NdisMedium802_3 = 1 : Public, Static, Literal, HasDefault
+    NdisApi.NDIS_MEDIUM NdisMedium802_5 = 2 : Public, Static, Literal, HasDefault
+    NdisApi.NDIS_MEDIUM NdisMediumFddi = 3 : Public, Static, Literal, HasDefault
+    NdisApi.NDIS_MEDIUM NdisMediumWan = 4 : Public, Static, Literal, HasDefault
+    NdisApi.NDIS_MEDIUM NdisMediumLocalTalk = 5 : Public, Static, Literal, HasDefault
+    NdisApi.NDIS_MEDIUM NdisMediumDix = 6 : Public, Static, Literal, HasDefault
+    NdisApi.NDIS_MEDIUM NdisMediumArcnetRaw = 7 : Public, Static, Literal, HasDefault
+    NdisApi.NDIS_MEDIUM NdisMediumArcnet878_2 = 8 : Public, Static, Literal, HasDefault
+    NdisApi.NDIS_MEDIUM NdisMediumAtm = 9 : Public, Static, Literal, HasDefault
+    NdisApi.NDIS_MEDIUM NdisMediumWirelessWan = 10 : Public, Static, Literal, HasDefault
+    NdisApi.NDIS_MEDIUM NdisMediumIrda = 11 : Public, Static, Literal, HasDefault
+    NdisApi.NDIS_MEDIUM NdisMediumBpc = 12 : Public, Static, Literal, HasDefault
+    NdisApi.NDIS_MEDIUM NdisMediumCoWan = 13 : Public, Static, Literal, HasDefault
+    NdisApi.NDIS_MEDIUM NdisMedium1394 = 14 : Public, Static, Literal, HasDefault
+    NdisApi.NDIS_MEDIUM NdisMediumInfiniBand = 15 : Public, Static, Literal, HasDefault
+    NdisApi.NDIS_MEDIUM NdisMediumTunnel = 16 : Public, Static, Literal, HasDefault
+    NdisApi.NDIS_MEDIUM NdisMediumNative802_11 = 17 : Public, Static, Literal, HasDefault
+    NdisApi.NDIS_MEDIUM NdisMediumLoopback = 18 : Public, Static, Literal, HasDefault
+    NdisApi.NDIS_MEDIUM NdisMediumWiMAX = 19 : Public, Static, Literal, HasDefault
+    NdisApi.NDIS_MEDIUM NdisMediumIP = 20 : Public, Static, Literal, HasDefault
+    NdisApi.NDIS_MEDIUM NdisMediumMax = 21 : Public, Static, Literal, HasDefault
