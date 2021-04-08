@@ -30,6 +30,10 @@ namespace TrafficReddirect {
         private static string normalAdapterID = "{BEC37E55-8901-46E8-BF94-5A30879F30AF}";
         private static string vpnAdapterID = "{45518F1E-1644-4CE0-8267-D4FC37690B17}";
 
+        private static PhysicalAddress sourceMac = PhysicalAddress.Parse("D8-7D-7F-70-0B-0D");
+
+        private static PhysicalAddress destinationeMac = PhysicalAddress.Parse("00-FF-46-51-8F-1E");
+
         static void Main(string[] args) {
             NdisApiDotNet ndisapi = new NdisApiDotNet(null);
             Console.ResetColor();
@@ -156,6 +160,7 @@ namespace TrafficReddirect {
                                 // Change the Source for outgoing packets that will later be sent thru normal adapter
                                 ipv4Packet.SourceAddress = localIp;
                                 ethernetPacket.SourceHardwareAddress = localMacAddress;
+                                ethernetPacket.DestinationHardwareAddress = sourceMac;
                                 ipv4Packet.UpdateIPChecksum();
                                 tcpPacket.UpdateTcpChecksum();
                                 ethernetPacket.UpdateCalculatedValues();
@@ -255,6 +260,7 @@ namespace TrafficReddirect {
                             // Change the Destination for incoming packets that will later be sent thru VPN adapter
                             if (ipv4Packet.DestinationAddress.Equals(localIp)) {
                                 ipv4Packet.DestinationAddress = vpnIP;
+                                ethernetPacket.SourceHardwareAddress = destinationeMac;
                                 ethernetPacket.DestinationHardwareAddress = vpnMacAddress;
                                 ipv4Packet.UpdateIPChecksum();
                                 tcpPacket.UpdateTcpChecksum();
@@ -312,16 +318,16 @@ namespace TrafficReddirect {
                 var ipAddressFilter =
                     new IpAddressFilter(
                         AddressFamily.InterNetwork,
-                        IpAddressFilter.IP_FILTER_FIELDS.IP_FILTER_DEST_ADDRESS | IpAddressFilter.IP_FILTER_FIELDS.IP_FILTER_SRC_ADDRESS,
+                        IpAddressFilter.IP_FILTER_FIELDS.IP_FILTER_SRC_ADDRESS,
                         new IpNetRange(IpNetRange.ADDRESS_TYPE.IP_RANGE_TYPE, line.Remote.Address, line.Remote.Address),
-                        new IpNetRange(IpNetRange.ADDRESS_TYPE.IP_RANGE_TYPE, localIp, localIp),
+                        null,
                         6
                     );
                 var portFilter =
                     new TcpUdpFilter(
-                        TcpUdpFilter.TCPUDP_FILTER_FIELDS.TCPUDP_DEST_PORT,
+                        TcpUdpFilter.TCPUDP_FILTER_FIELDS.TCPUDP_SRC_PORT,
                         new TcpUdpFilter.PortRange { startRange = (ushort)line.Remote.Port, endRange = (ushort)line.Remote.Port },
-                        new TcpUdpFilter.PortRange { startRange = (ushort)line.Local.Port, endRange = (ushort)line.Local.Port },
+                        new TcpUdpFilter.PortRange { startRange = (ushort)line.Remote.Port, endRange = (ushort)line.Remote.Port },
                         0);
                 var filter =
                     new StaticFilter(
@@ -344,15 +350,15 @@ namespace TrafficReddirect {
                 var ipAddressFilter =
                     new IpAddressFilter(
                         AddressFamily.InterNetwork,
-                        IpAddressFilter.IP_FILTER_FIELDS.IP_FILTER_DEST_ADDRESS | IpAddressFilter.IP_FILTER_FIELDS.IP_FILTER_SRC_ADDRESS,
-                        new IpNetRange(IpNetRange.ADDRESS_TYPE.IP_RANGE_TYPE, line.Local.Address, line.Local.Address),
+                        IpAddressFilter.IP_FILTER_FIELDS.IP_FILTER_DEST_ADDRESS,
+                        null,
                         new IpNetRange(IpNetRange.ADDRESS_TYPE.IP_RANGE_TYPE, line.Remote.Address, line.Remote.Address),
                         6
                     );
                 var portFilter =
                     new TcpUdpFilter(
                         TcpUdpFilter.TCPUDP_FILTER_FIELDS.TCPUDP_DEST_PORT,
-                        new TcpUdpFilter.PortRange { startRange = (ushort)line.Local.Port, endRange = (ushort)line.Local.Port },
+                        new TcpUdpFilter.PortRange { startRange = (ushort)line.Remote.Port, endRange = (ushort)line.Remote.Port },
                         new TcpUdpFilter.PortRange { startRange = (ushort)line.Remote.Port, endRange = (ushort)line.Remote.Port },
                         0);
                 var filter =
