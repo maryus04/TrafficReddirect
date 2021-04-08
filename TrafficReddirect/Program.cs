@@ -16,16 +16,19 @@ namespace TrafficReddirect {
 
         private static ManualResetEvent inPacketEvent = new ManualResetEvent(false);
 
-        private static IPAddress localIp = IPAddress.Parse("192.168.1.6");
-        private static IPAddress vpnIP = IPAddress.Parse("10.128.76.50");
+        private static IPAddress localIp;
+        private static IPAddress vpnIP;
 
-        private static PhysicalAddress localMacAddress = PhysicalAddress.Parse("FF-2E-77-30-1E-00");
-        private static PhysicalAddress vpnMacAddress = PhysicalAddress.Parse("00-FF-56-34-8F-1E");
+        private static PhysicalAddress localMacAddress; 
+        private static PhysicalAddress vpnMacAddress;
 
         private static readonly BackgroundWorker inWorker = new BackgroundWorker();
         private static readonly BackgroundWorker outWorker = new BackgroundWorker();
 
         private static List<StaticFilter> filterList = new List<StaticFilter>(3);
+
+        private static string normalAdapterID = "{BEC37E55-8901-46E8-BF94-5A30879F30AF}";
+        private static string vpnAdapterID = "{45518F1E-1644-4CE0-8267-D4FC37690B17}";
 
         static void Main(string[] args) {
             NdisApiDotNet ndisapi = new NdisApiDotNet(null);
@@ -38,19 +41,41 @@ namespace TrafficReddirect {
                 return;
             }
 
-            var vpnAdapter = NetworkAdapterHelper.GetVpnAdapter(ndisapi);
-            var normalAdapter = NetworkAdapterHelper.GetNormalAdapter(ndisapi);
+            var vpnAdapter = NetworkAdapterHelper.GetAdapterById(ndisapi, vpnAdapterID);
+            vpnIP = NetworkAdapterHelper.GetAdapterLocalIP(vpnAdapterID);
+            vpnMacAddress = NetworkAdapterHelper.GetAdapterPhisicalAddress(vpnAdapterID);
+
+            var normalAdapter = NetworkAdapterHelper.GetAdapterById(ndisapi, normalAdapterID);
+            localIp = NetworkAdapterHelper.GetAdapterLocalIP(normalAdapterID);
+            localMacAddress = NetworkAdapterHelper.GetAdapterPhisicalAddress(normalAdapterID);
+            Console.WriteLine($"======================================================================================");
+            Console.WriteLine($"Found Ethernet Adapter MAC: {localMacAddress} IP: {localIp}");
+            Console.WriteLine($"Found VPN Adapter      MAC: {vpnMacAddress} IP: {vpnIP}");
+            Console.WriteLine($"======================================================================================");
+
+            if (vpnIP == null) {
+                throw new Exception("VPN not connected");
+            }
 
             var tableList = IpHelperWrapper.GetTcpConnections("firefox");
 
+            Console.WriteLine();
+            Console.WriteLine($"==============================FireFox sockets=========================================");
+            Console.WriteLine($"======================================================================================");
             foreach (var line in tableList) {
                 Console.WriteLine($"Source: {line.Local.Address} Port: {line.Local.Port} -> Destination: {line.Remote.Address} Port: {line.Remote.Port}");
             }
+            Console.WriteLine($"======================================================================================");
 
             Console.ReadLine();
 
             LoadOutFilter(vpnAdapter.Handle, tableList);
             LoadInFilter(normalAdapter.Handle, tableList);
+
+            //LoadTESTInFilter(normalAdapter.Handle, tableList);
+            //LoadTESTOutFilter(normalAdapter.Handle, tableList);
+
+            //LoadTESTInFilter(vpnAdapter.Handle, tableList);
 
             LoadFilterEverythingElseFilter(vpnAdapter.Handle);
             LoadFilterEverythingElseFilter(normalAdapter.Handle);
@@ -133,6 +158,7 @@ namespace TrafficReddirect {
                                 ethernetPacket.SourceHardwareAddress = localMacAddress;
                                 ipv4Packet.UpdateIPChecksum();
                                 tcpPacket.UpdateTcpChecksum();
+                                ethernetPacket.UpdateCalculatedValues();
                                 var newPackage = new RawPacket() {
                                     Data = p.Bytes,
                                     FilterId = packet.FilterId,
@@ -232,6 +258,7 @@ namespace TrafficReddirect {
                                 ethernetPacket.DestinationHardwareAddress = vpnMacAddress;
                                 ipv4Packet.UpdateIPChecksum();
                                 tcpPacket.UpdateTcpChecksum();
+                                ethernetPacket.UpdateCalculatedValues();
                                 var newPackage = new RawPacket() {
                                     Data = p.Bytes,
                                     FilterId = packet.FilterId,
@@ -339,6 +366,70 @@ namespace TrafficReddirect {
                     portFilter
                     );
                 Console.WriteLine($"FILTER OUT Source:{line.Local.Address}:{line.Local.Port} Destination:{line.Remote.Address}:{line.Remote.Port}");
+                filterList.Add(filter);
+            }
+        }
+
+        private static void LoadTESTOutFilter(IntPtr adapterHandle, List<TCPUDPConnection> list) {
+            // Outgoing HTTP filter: REDIRECT OUT TCP packets with destination PORT 80
+            foreach (var line in list) {
+                var ipAddressFilter =
+                    new IpAddressFilter(
+                        AddressFamily.InterNetwork,
+                        IpAddressFilter.IP_FILTER_FIELDS.IP_FILTER_DEST_ADDRESS | IpAddressFilter.IP_FILTER_FIELDS.IP_FILTER_SRC_ADDRESS,
+                        new IpNetRange(IpNetRange.ADDRESS_TYPE.IP_RANGE_TYPE, line.Local.Address, line.Local.Address),
+                        new IpNetRange(IpNetRange.ADDRESS_TYPE.IP_RANGE_TYPE, line.Remote.Address, line.Remote.Address),
+                        6
+                    );
+                var portFilter =
+                    new TcpUdpFilter(
+                        TcpUdpFilter.TCPUDP_FILTER_FIELDS.TCPUDP_DEST_PORT,
+                        new TcpUdpFilter.PortRange { startRange = (ushort)line.Local.Port, endRange = (ushort)line.Local.Port },
+                        new TcpUdpFilter.PortRange { startRange = (ushort)line.Remote.Port, endRange = (ushort)line.Remote.Port },
+                        0);
+                var filter =
+                    new StaticFilter(
+                    adapterHandle,
+                    PACKET_FLAG.PACKET_FLAG_ON_SEND,
+                    StaticFilter.FILTER_PACKET_ACTION.FILTER_PACKET_REDIRECT,
+                    StaticFilter.STATIC_FILTER_FIELDS.NETWORK_LAYER_VALID | StaticFilter.STATIC_FILTER_FIELDS.TRANSPORT_LAYER_VALID,
+                    null,
+                    ipAddressFilter,
+                    portFilter
+                    );
+                Console.WriteLine($"FILTER OUT Source:{line.Local.Address}:{line.Local.Port} Destination:{line.Remote.Address}:{line.Remote.Port}");
+                filterList.Add(filter);
+            }
+        }
+
+        private static void LoadTESTInFilter(IntPtr adapterHandle, List<TCPUDPConnection> list) {
+            // Incoming HTTP filter: REDIRECT IN TCP packets with source PORT 80
+            foreach (var line in list) {
+                var ipAddressFilter =
+                    new IpAddressFilter(
+                        AddressFamily.InterNetwork,
+                        IpAddressFilter.IP_FILTER_FIELDS.IP_FILTER_DEST_ADDRESS | IpAddressFilter.IP_FILTER_FIELDS.IP_FILTER_SRC_ADDRESS,
+                        new IpNetRange(IpNetRange.ADDRESS_TYPE.IP_RANGE_TYPE, line.Remote.Address, line.Remote.Address),
+                        new IpNetRange(IpNetRange.ADDRESS_TYPE.IP_RANGE_TYPE, line.Local.Address, line.Local.Address),
+                        6
+                    );
+                var portFilter =
+                    new TcpUdpFilter(
+                        TcpUdpFilter.TCPUDP_FILTER_FIELDS.TCPUDP_DEST_PORT,
+                        new TcpUdpFilter.PortRange { startRange = (ushort)line.Remote.Port, endRange = (ushort)line.Remote.Port },
+                        new TcpUdpFilter.PortRange { startRange = (ushort)line.Local.Port, endRange = (ushort)line.Local.Port },
+                        0);
+                var filter =
+                    new StaticFilter(
+                    adapterHandle,
+                    PACKET_FLAG.PACKET_FLAG_ON_SEND_RECEIVE,
+                    StaticFilter.FILTER_PACKET_ACTION.FILTER_PACKET_REDIRECT,
+                    StaticFilter.STATIC_FILTER_FIELDS.NETWORK_LAYER_VALID | StaticFilter.STATIC_FILTER_FIELDS.TRANSPORT_LAYER_VALID,
+                    null,
+                    ipAddressFilter,
+                    portFilter
+                    );
+                Console.WriteLine($"FILTER IN Source:{line.Remote.Address}:{line.Remote.Port} Destination:{localIp}:{line.Remote.Port}");
                 filterList.Add(filter);
             }
         }

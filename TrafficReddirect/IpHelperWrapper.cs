@@ -39,7 +39,8 @@ namespace TrafficReddirect {
 				row.Local = Utils.BufferToIPEndPoint(buffer, ref nOffset, false);
 				row.Remote = Utils.BufferToIPEndPoint(buffer, ref nOffset, true);
 				row.PID = Utils.BufferToInt(buffer, ref nOffset);
-				if(processName == Utils.GetProcessNameByPID(row.PID)) {
+				if (processName == Utils.GetProcessNameByPID(row.PID) &&
+				   (row.Local.Address.ToString() != "127.0.0.1" || row.Remote.Address.ToString() != "127.0.0.1")) {
 					listOfTcp.Add(row);
 				}
 			}
